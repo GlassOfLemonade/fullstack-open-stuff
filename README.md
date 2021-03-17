@@ -1,3 +1,3 @@
 # fullstack-open-stuff
 
-a repository for my submission for fullstack open
+a repository for my submissions for fullstack open
