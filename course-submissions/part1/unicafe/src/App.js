@@ -2,6 +2,13 @@ import React, { useState } from 'react'
 
 const Statistics = ({stats}) => {
   const { good, neutral, bad} = stats
+  if (good === 0 && neutral === 0 && bad === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
   return (
     <div>
       <h1>statistics</h1>
