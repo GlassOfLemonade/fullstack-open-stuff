@@ -1,5 +1,38 @@
 import React, { useState } from 'react'
 
+const TopAnecdote = ({points, anecdotes}) => {
+
+  const indexOfMax = (array) => {
+    if (array.length === 0) {
+      return -1
+    }
+
+    let max = array[0]
+    let maxIndex = 0
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] > max) {
+        max = array[i]
+        maxIndex = i
+      }
+    }
+
+    return maxIndex
+  }
+
+  const highest = Math.max(...points)
+  const highestIndex = indexOfMax(...points)
+  const anecdote = anecdotes[highestIndex]
+  
+  return (
+    <div>
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdote}</p>
+      <p>has {highest} votes</p>
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -31,7 +64,7 @@ const App = () => {
       <button onClick={handleClick}>vote</button>
       <button onClick={() => {setSelected(getRandomInt(anecdotes.length - 1))}}>next anecdote</button>
 
-      
+      <TopAnecdote points={points} anecdotes={anecdotes} />
     </div>
   )
 }
