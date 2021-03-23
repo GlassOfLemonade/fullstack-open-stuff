@@ -16,11 +16,8 @@ const Header = ({ name }) => {
 }
 
 const Total = ({ parts }) => {
-  const sum = parts.reduce((total, {name, exercises, id}) => {
-    console.log(total)
-    return total + exercises
-  }, 0)
-  console.log(sum)
+  const sum = parts.reduce((total, {name, exercises, id}) => total + exercises, 0)
+  // console.log(sum)
   return (
     <p>Number of exercises {sum}</p>
   ) 
