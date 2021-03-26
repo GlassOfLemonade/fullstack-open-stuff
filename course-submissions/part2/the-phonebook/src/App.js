@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import PersonForm from './PersonForm'
+import Filter from './Filter'
+import Persons from './Persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -32,7 +35,7 @@ const App = () => {
     if (matchFound === undefined) {
       const newPerson = {
         name: newName,
-        phone: newPhone
+        number: newPhone
       }
       setPersons(persons.concat(newPerson))
     } else {
@@ -41,33 +44,14 @@ const App = () => {
     }
   }
 
-  // rerender by filtering persons array
-  const filtered = (filter === '') ? persons : persons.filter(person => (person.name.toLowerCase().includes(filter) || person.name.includes(filter)))
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filter} onChange={handleFilter}/>
-      </div>
+      <Filter filter={filter} handleFilter={handleFilter} />
       <h2>Add New</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNewName} />
-        </div>
-        <div>
-          number: <input value={newPhone} onChange={handleNewPhone} />
-        </div>
-        <div>
-          <button type="submit" onClick={handleNewPerson}>add</button>
-        </div>
-      </form>
+      <PersonForm newName={newName} newPhone={newPhone} handleNewName={handleNewName} handleNewPhone={handleNewPhone} handleNewPerson={handleNewPerson} />
       <h2>Numbers</h2>
-      <div>
-        {filtered.map(person => 
-          <p key={person.name}>{person.name} {person.number}</p>
-        )}
-      </div>
+      <Persons persons={persons} filter={filter} /> 
     </div>
   )
 }
