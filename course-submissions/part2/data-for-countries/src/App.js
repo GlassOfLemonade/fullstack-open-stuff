@@ -23,6 +23,45 @@ const App = () => {
   },[])
 
   // components
+  const View = ({country}) => {
+    // console.log(country)
+    return (
+      <div>
+        <h1>{country.name}</h1>
+        <div>Capital: {country.capital}</div>
+        <div>Population: {country.population}</div>
+        <h2>Languages</h2>
+        <ul>
+          {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
+        </ul>
+        <div>
+          <img style={{maxWidth: "100px"}} src={country.flag} alt="country flag"/>
+        </div>
+      </div>
+    )
+  }
+
+  const CountryListItem = ({country}) => {
+    //component state
+    const [toggle, setToggle] = useState(false)
+
+    //event handlers
+    const handleShow = (event) => {
+      // console.log('show button pressed')
+      setToggle(true)
+    }
+
+    //render
+    return (
+      <div>
+        <div>{country.name} <button onClick={handleShow}>show</button></div>
+        {toggle &&
+          <View country={country} />
+        }
+      </div>
+    )
+  }
+
   const Countries = ({countries, filter}) => {
     //special render for empty
     if (filter === '') {
@@ -46,23 +85,16 @@ const App = () => {
     } else if (filtered.length === 1) {
       const country = filtered[0]
       return (
-        <div>
-          <h1>{country.name}</h1>
-          <div>Capital: {country.capital}</div>
-          <div>Population: {country.population}</div>
-          <h2>Languages</h2>
-          <ul>
-            {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
-          </ul>
-          <div>
-            <img style={{maxWidth: "100px"}} src={country.flag} alt="country flag"/>
-          </div>
-        </div>
+        <View country={country} />
       )
     } else {
       return (
         <div>
-          {filtered.map(country => <div key={country.name}>{country.name}</div>)}
+          {filtered.map(country => {
+            return (
+              <CountryListItem key={country.name} country={country} />
+            )
+          })}
         </div>
       )
     }
