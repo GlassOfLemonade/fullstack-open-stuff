@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const App = () => {
-  // app states
+  // app states and vars
   const [countries, setCountries]  = useState([])
   const [filter, setFilter] = useState('')
+
+  const api_key = process.env.REACT_APP_WEATHERSTACK_API_KEY
 
   // functions and event handlers
   const handleFilter = (event) => {
@@ -13,18 +15,47 @@ const App = () => {
   }
   useEffect(() => {
     // get all countries
-    console.log('use effect running...')
+    // console.log('use effect running...')
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then( response => {
-        console.log('promise fulfilled')
+        // console.log('promise fulfilled')
         setCountries(response.data)
       })
   },[])
 
   // components
+  const Weather = ({weather}) => {
+    return (
+      <div>
+        <div>
+          <div><b>Temperature:</b> {weather.current.temperature}</div>
+          <div>
+            <img src={weather.current.weather_icons[0]} alt="weather icon" />
+          </div>
+          <div><b>Wind:</b> {weather.current.wind_speed} mph, direction {weather.current.wind_dir}</div>
+        </div>
+      </div>
+    )
+  }
+
   const View = ({country}) => {
-    // console.log(country)
+    //component state
+    const [weather, setWeather] = useState([])
+    const [dataReceived, setDataReceived] = useState(false)
+
+    useEffect(() => {
+      // get weather of country's capital
+      // console.log('getting weather...')
+      axios
+      .get('http://api.weatherstack.com/current?access_key=' + api_key + '&query=' + country.capital)
+      .then( response => {
+        // console.log('weather gotten from api!')
+        setWeather(response.data)
+        setDataReceived(true)
+      })
+    },[country.capital])
+
     return (
       <div>
         <h1>{country.name}</h1>
@@ -35,8 +66,12 @@ const App = () => {
           {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
         </ul>
         <div>
-          <img style={{maxWidth: "100px"}} src={country.flag} alt="country flag"/>
+          <img style={{maxWidth: "100px"}} src={country.flag} alt={country.name + "'s national flag"}/>
         </div>
+        <h2>Weather in {country.capital}</h2>
+        { dataReceived && 
+          <Weather weather={weather} />
+        }
       </div>
     )
   }
