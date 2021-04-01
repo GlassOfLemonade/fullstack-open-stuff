@@ -75,9 +75,18 @@ const App = () => {
         refreshData()
       })
       
-    } else {
+    } else { // existing name found
       console.log(matchFound)
-      window.alert(`${newName} is already added to phonebook`)
+      // find the entry in state
+      const person = persons.find(entry => entry.name === newName)
+      const newPersonObj = { ...person, number: newPhone }
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        Phonebook.update(person.id, newPersonObj).then(response => {
+          console.log(response)
+          // refresh data
+          refreshData()
+        })
+      }
     }
   }
 
