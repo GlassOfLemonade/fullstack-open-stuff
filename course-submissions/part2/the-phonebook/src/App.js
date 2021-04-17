@@ -48,26 +48,21 @@ const App = () => {
   }
 
   const handleNewName = (event) => {
-    // console.log(event.target.value)
     setNewName(event.target.value)
   }
   const handleNewPhone = (event) => {
-    // console.log(event.target.value)
     setNewPhone(event.target.value)
   }
   const handleFilter = (event) => {
-    // console.log(event.target.value)
     setFilter(event.target.value)
   }
 
   const handleDelete = (id) => {
-    setType('notification')
-    setErrorMessage(
-      `Removing ${persons[id-1].name}...`
-    )
+    const person = persons.find(person => person.id === id)
     Phonebook.remove(id).then(response => {
+      setType('error')
       setErrorMessage(
-        'Successfully removed!'
+        `Information of ${person.name} has been successfully removed!`
       )
       setTimeout(() => {
         setErrorMessage(null)
