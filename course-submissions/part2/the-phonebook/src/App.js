@@ -118,6 +118,14 @@ const App = () => {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         Phonebook.update(person.id, newPersonObj).then(response => {
           console.log(response)
+          setType('notification')
+          setErrorMessage(
+            `Entry for ${person.name} has been updated in the phonebook!`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+            setType('')
+          }, 4000)
           // refresh data
           refreshData()
         })
