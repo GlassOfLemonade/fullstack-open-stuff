@@ -109,6 +109,17 @@ const App = () => {
         setNewPhone('')
         refreshData()
       })
+      .catch(error => {
+        console.log(error.response.data)
+        setType('error')
+        setErrorMessage(
+          `${error.response.data.error}`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+          setType('')
+        }, 4000)
+      })
       
     } else { // existing name found
       console.log(matchFound)
@@ -132,7 +143,7 @@ const App = () => {
         .catch(error => {
           setType('error')
           setErrorMessage(
-            'Entry has already been removed from the server, please refresh your application!'
+            `${error.response.data.error}`
           )
           setTimeout(() => {
             setErrorMessage(null)
